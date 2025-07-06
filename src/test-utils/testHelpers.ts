@@ -8,7 +8,7 @@ export const renderWithProviders = (
   ui: ReactElement,
   options?: Omit<RenderOptions, 'wrapper'>
 ) => {
-  const Wrapper = ({ children }: { children: React.ReactNode }) => {
+  function Wrapper({ children }: { children: React.ReactNode }) {
     return <GameProvider>{children}</GameProvider>
   }
 

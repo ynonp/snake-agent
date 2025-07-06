@@ -241,23 +241,18 @@ describe('Game Store', () => {
       it('should keep tail when apple eaten', () => {
         gameStore.gameStarted = true
         gameStore.direction = 'DOWN'
-        gameStore.snake = [{ x: 12, y: 12 }, { x: 12, y: 13 }]
-        gameStore.apple = { position: { x: 12, y: 13 }, type: 'regular', points: 10 }
-        
-        // Mock the collision check to return true for the apple
-        vi.spyOn(gameActions, 'checkAppleCollision').mockReturnValue(true)
+        gameStore.snake = [{ x: 12, y: 12 }, { x: 12, y: 11 }] // Head at 12,12, moving down
+        gameStore.apple = { position: { x: 12, y: 13 }, type: 'regular', points: 10 } // Apple where head will move
         
         gameActions.moveSnake()
-        expect(gameStore.snake.length).toBe(3) // Should grow
+        expect(gameStore.snake.length).toBe(3) // Should grow because apple was eaten
       })
 
       it('should end game when collision detected', () => {
         gameStore.gameStarted = true
         gameStore.direction = 'LEFT'
-        gameStore.snake = [{ x: 0, y: 12 }] // At left wall
-        
-        // Mock the collision check to return true
-        vi.spyOn(gameActions, 'checkCollision').mockReturnValue(true)
+        gameStore.nextDirection = 'LEFT'
+        gameStore.snake = [{ x: 0, y: 12 }] // At left wall, moving left will cause collision
         
         gameActions.moveSnake()
         expect(gameStore.gameOver).toBe(true)
@@ -303,8 +298,8 @@ describe('Game Store', () => {
       })
 
       it('should return false when no collision', () => {
-        gameStore.snake = [{ x: 12, y: 12 }]
-        const headPosition: Position = { x: 12, y: 13 }
+        gameStore.snake = [{ x: 12, y: 12 }] // Snake at center
+        const headPosition: Position = { x: 13, y: 12 } // Safe position
         const collision = gameActions.checkCollision(headPosition)
         expect(collision).toBe(false)
       })
@@ -325,7 +320,7 @@ describe('Game Store', () => {
       })
 
       it('should return false when positions do not match', () => {
-        gameStore.apple = { position: { x: 12, y: 13 }, type: 'regular', points: 10 }
+        gameStore.apple = { position: { x: 15, y: 15 }, type: 'regular', points: 10 }
         const headPosition: Position = { x: 10, y: 10 }
         const collision = gameActions.checkAppleCollision(headPosition)
         expect(collision).toBe(false)
