@@ -1,7 +1,12 @@
+'use client';
+
+import SnakeGame from '../components/snake/SnakeGame';
+import { GameProvider } from '../contexts/GameContext';
+
 export default function Home() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-  )
+    <GameProvider>
+      <SnakeGame />
+    </GameProvider>
+  );
 }
