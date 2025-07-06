@@ -1,5 +1,5 @@
 import { proxy } from 'valtio';
-import { GameState, Position, Apple, Direction } from '../types/game';
+import { GameState, Position, Direction } from '../types/game';
 
 const GRID_SIZE = 20;
 const BOARD_WIDTH = 25;
